@@ -22,9 +22,7 @@ class ThreadedHTTPServer(ThreadingMixIn, HTTPServer):
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 from pitch_engine import generate_pitch, DURATION_CONFIGS
 
-PORT = int(os.environ.get("PYTHON_PORT", 8001))
-
-ALLOWED_ORIGINS = {"http://127.0.0.1:3000", "http://localhost:3000"}
+PORT = int(os.environ.get("PORT", os.environ.get("PYTHON_PORT", 8001)))
 
 def sanitize_string(val: Any, max_len: int = 200) -> str:
     if not isinstance(val, str):
@@ -43,10 +41,10 @@ class PitchApiHandler(BaseHTTPRequestHandler):
         self.send_header("X-Content-Type-Options", "nosniff")
         
         origin = self.headers.get("Origin", "")
-        if origin in ALLOWED_ORIGINS:
+        if origin:
             self.send_header("Access-Control-Allow-Origin", origin)
         else:
-            self.send_header("Access-Control-Allow-Origin", "http://127.0.0.1:3000")
+            self.send_header("Access-Control-Allow-Origin", "*")
 
         self.send_header("Access-Control-Allow-Methods", "GET, POST, OPTIONS")
         self.send_header("Access-Control-Allow-Headers", "Content-Type, Authorization")
@@ -141,9 +139,9 @@ class PitchApiHandler(BaseHTTPRequestHandler):
 
 
 def run():
-    server_address = ("127.0.0.1", PORT)
+    server_address = ("0.0.0.0", PORT)
     httpd = ThreadedHTTPServer(server_address, PitchApiHandler)
-    print(f"[Python Backend] Pitch API server running on http://127.0.0.1:{PORT}")
+    print(f"[Python Backend] Pitch API server running on port {PORT}")
 
     try:
         httpd.serve_forever()

@@ -49,9 +49,10 @@ export default function App() {
     timer.setDuration(duration * 60);
 
     const targetTopic = topic.trim() || category;
+    const apiBase = (import.meta.env.VITE_API_BASE_URL as string) || 'https://topictalk-li8b.onrender.com';
 
     try {
-      const response = await fetch('/api/generate-pitch', {
+      const response = await fetch(`${apiBase}/api/generate-pitch`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

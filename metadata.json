@@ -1,0 +1,6 @@
+{
+  "name": "AI Pitch Studio",
+  "description": "Theme-adaptive, AI-powered startup pitch generator and practice teleprompter studio with dynamic glassmorphism and a drift-free countdown timer.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
